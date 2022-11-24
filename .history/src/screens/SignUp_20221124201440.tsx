@@ -7,7 +7,7 @@ import LogoSvg from "@assets/logo.svg";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
-export function SignIn() {
+export function SignUp() {
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -30,6 +30,7 @@ export function SignIn() {
           <Heading color="gray.100" mb={6} fontFamily="heading">
             Acesse sua Conta
           </Heading>
+          <Input placeholder="Nome" />
           <Input
             placeholder="E-mail"
             keyboardType="email-address"
