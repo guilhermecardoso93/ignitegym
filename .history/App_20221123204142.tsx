@@ -7,20 +7,28 @@ import {
 } from "@expo-google-fonts/roboto";
 
 import { Loading } from "@components/Loading";
-import { THEME } from "./src/theme";
-import { SignIn } from "@screens/SignIn";
+import { THEME } from './src/theme';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_700Bold, Roboto_400Regular });
 
   return (
     <NativeBaseProvider theme={THEME}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
-      {fontsLoaded ? <SignIn /> : <Loading />}
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#202024",
+        }}
+      >
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        <Loading />
+      </View>
     </NativeBaseProvider>
   );
 }
