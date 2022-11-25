@@ -27,7 +27,6 @@ export function SignUp() {
           alt="Foto de pessoas treinando na academia"
           resizeMode="contain"
           position="absolute"
-          defaultSource={BackgroundImg}
         />
         <Center my={16}>
           <LogoSvg />

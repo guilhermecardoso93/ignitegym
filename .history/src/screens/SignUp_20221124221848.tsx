@@ -16,6 +16,7 @@ export function SignUp() {
     navigation.goBack();
   }
 
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -27,7 +28,6 @@ export function SignUp() {
           alt="Foto de pessoas treinando na academia"
           resizeMode="contain"
           position="absolute"
-          defaultSource={BackgroundImg}
         />
         <Center my={16}>
           <LogoSvg />
@@ -48,12 +48,7 @@ export function SignUp() {
           <Input placeholder="Senha" secureTextEntry />
           <Button title="Criar e acessar" />
         </Center>
-        <Button
-          title="Voltar para o login"
-          variant="outline"
-          mt={24}
-          onPress={handleGoBack}
-        />
+        <Button title="Voltar para o login" variant="outline" mt={24} onPress={handleGoBack}/>
       </VStack>
     </ScrollView>
   );
