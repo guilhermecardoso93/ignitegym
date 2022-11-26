@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import {
-  VStack,
-  Text,
-  Center,
-  ScrollView,
-  Skeleton,
-  Heading,
-} from "native-base";
+import { VStack, Text, Center, ScrollView, Skeleton, Heading } from "native-base";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
@@ -50,25 +43,42 @@ export function Profile() {
               Alterar Foto
             </Text>
           </TouchableOpacity>
-          <Input placeholder="Nome" bg="gray.600" />
-          <Input
+          <Input 
+            placeholder="Nome"
+            bg='gray.600'
+          />
+           <Input 
             value="guilherme_cardosogui@hotmail.com"
-            bg="gray.600"
+            bg='gray.600'
             isDisabled
           />
         </Center>
         <VStack px={10} mt={12} mb={9}>
-          <Heading color="gray.200" fontSize="md" mb={2}>
-            Alterar Senha
-          </Heading>
-          <Input placeholder="Senha Antiga" bg="gray.600" secureTextEntry />
-          <Input placeholder="Nova Senha" bg="gray.600" secureTextEntry />
-          <Input
-            placeholder="Confirme a nova senha"
-            bg="gray.600"
-            secureTextEntry
-          />
-          <Button title="Atualizar Senha" mt={4} />
+            <Heading
+              color='gray.200'
+              fontSize='md'
+              mb={2}
+            >
+              Alterar Senha
+            </Heading>
+            <Input 
+              placeholder="Senha Antiga"
+              bg='gray.600'
+              secureTextEntry
+            />
+             <Input 
+              placeholder="Nova Senha"
+              bg='gray.600'
+              secureTextEntry
+            />
+             <Input 
+              placeholder="Confirme a nova senha"
+              bg='gray.600'
+              secureTextEntry
+            />
+            <Button
+              title='Atualizar Senha'
+            />
         </VStack>
       </ScrollView>
     </VStack>
