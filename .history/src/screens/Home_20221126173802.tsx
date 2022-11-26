@@ -47,8 +47,6 @@ export function Home() {
           data={exercises}
           keyExtractor={(item) => item}
           renderItem={({ item }) => <Exercise />}
-          showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{ paddingBottom: 20}}
         />
       </VStack>
     </VStack>

@@ -7,12 +7,6 @@ import { Exercise } from "@components/Exercise";
 
 export function Home() {
   const [groups, setGroups] = useState(["costas", "perna", "bíceps", "ombro"]);
-  const [exercises, setExercises] = useState([
-    "Puxada Frontal",
-    "Remada Curvada",
-    "Remada Unilateral",
-    "Levantamento Terra",
-  ]);
   const [groupSelected, setGroupSelected] = useState("costa");
 
   return (
@@ -34,22 +28,16 @@ export function Home() {
         my={10}
         maxH={10}
       />
-      <VStack flex={1} px={8}>
-        <HStack justifyContent="space-between" mb={5}>
+      <VStack flex={1} px={8} mb={5}>
+        <HStack justifyContent="space-between">
           <Heading color="gray.200" fontSize="md">
             Exercícios
           </Heading>
           <Text color="gray.200" fontSize="sm">
-            {exercises.length}
+            4
           </Text>
         </HStack>
-        <FlatList
-          data={exercises}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => <Exercise />}
-          showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{ paddingBottom: 20}}
-        />
+        <Exercise />
       </VStack>
     </VStack>
   );
