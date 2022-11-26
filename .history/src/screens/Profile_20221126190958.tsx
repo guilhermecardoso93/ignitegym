@@ -22,7 +22,7 @@ export function Profile() {
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
-      <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
         <Center mt={6} px={10}>
           {photoIsLoading ? (
             <Skeleton

@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { HStack, Text, VStack, FlatList, Heading } from "native-base";
-import { useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { Header } from "@components/Header";
 import { Group } from "@components/Group";
 import { Exercise } from "@components/Exercise";
-
 
 export function Home() {
   const [groups, setGroups] = useState(["costas", "perna", "bíceps", "ombro"]);
@@ -18,11 +15,9 @@ export function Home() {
   ]);
   const [groupSelected, setGroupSelected] = useState("costas");
 
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
-
 
   function handleExercisesDetails() {
-    navigation.navigate('exercise')
+
   }
 
   return (
@@ -46,7 +41,6 @@ export function Home() {
         _contentContainerStyle={{ px: 8 }}
         my={10}
         maxH={10}
-        minH={10}
       />
       <VStack flex={1} px={8}>
         <HStack justifyContent="space-between" mb={5}>

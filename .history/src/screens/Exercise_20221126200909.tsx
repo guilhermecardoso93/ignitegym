@@ -4,20 +4,22 @@ import { TouchableOpacity } from "react-native";
 import {
   VStack,
   Text,
+  Center,
   Heading,
   Icon,
   HStack,
   Image,
   Box,
-  ScrollView,
 } from "native-base";
 import { Feather } from "@expo/vector-icons";
+
 
 import { Button } from "@components/Button";
 
 import BodySvg from "@assets/body.svg";
 import SeriesSvg from "@assets/series.svg";
 import RepetitionsSVG from "@assets/repetitions.svg";
+
 
 export function Exercise() {
   const navigation = useNavigation<AppNavigatorRoutesProps>();
@@ -49,44 +51,44 @@ export function Exercise() {
           </HStack>
         </HStack>
       </VStack>
-      <ScrollView>
-        <VStack p={8}>
-          <Image
-            w="full"
-            h={80}
-            source={{
-              uri: "https://www.feitodeiridium.com.br/wp-content/uploads/2016/07/remada-unilateral-2.jpg",
-            }}
-            rounded="lg"
-            alt=""
-            mb={3}
-            resizeMode="cover"
-            overflow="hidden"
-          />
-          <Box bg="gray.600" rounded="md" pb={4} px={4}>
-            <HStack
-              mb={6}
-              mt={5}
-              alignItems="center"
-              justifyContent="space-around"
-            >
-              <HStack>
-                <SeriesSvg />
-                <Text color="gray.200" ml={2}>
-                  3 Series
-                </Text>
-              </HStack>
-              <HStack>
-                <RepetitionsSVG />
-                <Text color="gray.200" ml={2}>
-                  12 Repetições
-                </Text>
-              </HStack>
+      <VStack p={8}>
+        <Image
+          w="full"
+          h={80}
+          source={{
+            uri: "https://www.feitodeiridium.com.br/wp-content/uploads/2016/07/remada-unilateral-2.jpg",
+          }}
+          rounded="lg"
+          alt=""
+          mb={3}
+          resizeMode="cover"
+          overflow="hidden"
+        />
+        <Box bg="gray.600" rounded="md" pb={4} px={4}>
+          <HStack
+            mb={6}
+            mt={5}
+            alignItems="center"
+            justifyContent="space-around"
+          >
+            <HStack>
+              <SeriesSvg />
+              <Text color="gray.200" ml={2}>
+                3 Series
+              </Text>
             </HStack>
-            <Button title="Marca como realizado" />
-          </Box>
-        </VStack>
-      </ScrollView>
+            <HStack>
+              <RepetitionsSVG />
+              <Text color="gray.200" ml={2}>
+                12 Repetições
+              </Text>
+            </HStack>
+          </HStack>
+          <Button 
+            title="Marca como realizado"
+          />
+        </Box>
+      </VStack>
     </VStack>
   );
 }
