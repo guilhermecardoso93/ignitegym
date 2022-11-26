@@ -6,14 +6,7 @@ import { HistoryCard } from "@components/HistoryCard";
 
 export function History() {
   const [exercises, setExercises] = useState([
-    {
-      title: "26.08.22",
-      data: ["Puxada Frontal", "Ramada Unilatarel"],
-    },
-    {
-      title: "27.08.22",
-      data: ["Puxada Frontal"],
-    },
+    
   ]);
 
   return (
@@ -30,12 +23,10 @@ export function History() {
           </Heading>
         )}
         px={6}
-        contentContainerStyle={
-          exercises.length === 0 && { flex: 1, justifyContent: "center" }
-        }
+        contentContainerStyle={exercises.length === 0 && { flex: 1, justifyContent: 'center'}}
         ListEmptyComponent={() => (
-          <Text color="gray.100" textAlign="center">
-            Não há exercícios registrados ainda.{"\n"}
+          <Text color='gray.100' textAlign='center'>
+            Não há exercícios registrados ainda.{'\n'}
             Vamos treinar hoje?
           </Text>
         )}

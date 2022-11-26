@@ -24,10 +24,7 @@ export function Home() {
         renderItem={({ item }) => (
           <Group
             name={item}
-            isActive={
-              String(groupSelected).toLocaleUpperCase() ===
-              String(item).toLocaleUpperCase()
-            }
+            isActive={String(groupSelected).toLocaleUpperCase() === String(item).toLocaleUpperCase()}
             onPress={() => setGroupSelected(item)}
           />
         )}
@@ -51,7 +48,7 @@ export function Home() {
           keyExtractor={(item) => item}
           renderItem={({ item }) => <Exercise />}
           showsVerticalScrollIndicator={false}
-          _contentContainerStyle={{ paddingBottom: 20 }}
+          _contentContainerStyle={{ paddingBottom: 20}}
         />
       </VStack>
     </VStack>
