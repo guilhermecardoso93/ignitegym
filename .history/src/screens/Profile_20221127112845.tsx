@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import {
   VStack,
   Text,
@@ -7,10 +7,8 @@ import {
   ScrollView,
   Skeleton,
   Heading,
-  useToast
 } from "native-base";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
@@ -21,45 +19,20 @@ const PHOTO_SIZE = 33;
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState(
-    "https://github.com/guilhermecardoso93.png"
-  );
-
-  const toast = useToast()
+  const [ userPhoto, setUserPhoto ] = useState('https://github.com/guilhermecardoso93.png')
 
   async function handleUserPhotoSelect() {
-    setPhotoIsLoading(true);
+    const photoSelected = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      aspect: [4, 4],
+      allowsEditing: true,
+    });
 
-    try {
-      const photoSelected = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
-        aspect: [4, 4],
-        allowsEditing: true,
-      });
+    console.log(photoSelected);
 
-      if (photoSelected.canceled) {
-        return;
-      }
-
-      if (photoSelected.assets[0].uri) {
-        const photoInfo = await FileSystem.getInfoAsync(
-          photoSelected.assets[0].uri
-        );
-        if (photoInfo.size && photoInfo.size / 1024 / 2024 > 5) {
-          return toast.show({
-            title:"Essa Imagem é muito grande. Escolha uma imagem de até 5MB",
-            placement:'top',
-            bgColor: 'red.500',
-            
-          })
-        }
-          setUserPhoto(photoSelected.assets[0].uri);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setPhotoIsLoading(false);
+    if (photoSelected.canceled) {
+      return;
     }
   }
 
@@ -77,7 +50,11 @@ export function Profile() {
               endColor="gray.400"
             />
           ) : (
-            <UserPhoto source={{ uri: userPhoto }} alt="" size={70} />
+            <UserPhoto
+              source={{ uri: userPhoto }}
+              alt=""
+              size={70}
+            />
           )}
           <TouchableOpacity onPress={handleUserPhotoSelect}>
             <Text

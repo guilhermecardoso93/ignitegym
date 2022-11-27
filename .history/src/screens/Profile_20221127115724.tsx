@@ -50,7 +50,6 @@ export function Profile() {
           return toast.show({
             title:"Essa Imagem é muito grande. Escolha uma imagem de até 5MB",
             placement:'top',
-            bgColor: 'red.500',
             
           })
         }
