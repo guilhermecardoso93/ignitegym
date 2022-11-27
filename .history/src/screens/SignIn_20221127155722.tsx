@@ -42,7 +42,7 @@ export function SignIn() {
   }
 
   function handleSignIn() {
-    navigation.navigate("signup");
+    navigation.navigate("home");
   }
 
   return (

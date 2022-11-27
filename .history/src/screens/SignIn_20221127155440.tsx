@@ -41,10 +41,6 @@ export function SignIn() {
     navigation.navigate("signup");
   }
 
-  function handleSignIn() {
-    navigation.navigate("signup");
-  }
-
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -96,7 +92,7 @@ export function SignIn() {
               />
             )}
           />
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+          <Button title="Acessar" />
         </Center>
         <Center mt={24}>
           <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">

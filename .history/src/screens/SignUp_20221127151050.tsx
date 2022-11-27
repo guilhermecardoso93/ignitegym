@@ -1,11 +1,8 @@
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
 import BackgroundImg from "@assets/background.png";
 import LogoSvg from "@assets/logo.svg";
@@ -14,36 +11,30 @@ import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
 type FormData = {
+  name: string;
   email: string;
   password: string;
+  password_confirm: string;
 };
 
-const sigUpSchema = yup.object({
-  email: yup.string().required("Informe o e-mail.").email("E-mail inválido."),
-  password: yup
-    .string()
-    .required("Informe uma senha.")
-    .min(6, "Senha deve ter pelo menos 6 caracteres."),
-});
-
-export function SignIn() {
+export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(sigUpSchema),
-  });
+  } = useForm<FormData>();
 
-  function handleNewAccount() {
-    navigation.navigate("signup");
+  function handleGoBack() {
+    navigation.goBack();
   }
 
-  function handleSignIn() {
-    navigation.navigate("signup");
-  }
+  function handleSignUp({
+    name,
+    email,
+    password,
+    password_confirm,
+  }: FormData) {}
 
   return (
     <ScrollView
@@ -53,12 +44,12 @@ export function SignIn() {
       <VStack flex={1} bg="gray.700" px={10} py={16}>
         <Image
           source={BackgroundImg}
-          defaultSource={BackgroundImg}
           alt="Foto de pessoas treinando na academia"
           resizeMode="contain"
           position="absolute"
+          defaultSource={BackgroundImg}
         />
-        <Center my={24}>
+        <Center my={16}>
           <LogoSvg />
           <Text color="gray.100" fontSize="sm">
             Treine sua mente e seu corpo
@@ -66,11 +57,30 @@ export function SignIn() {
         </Center>
         <Center>
           <Heading color="gray.100" mb={6} fontFamily="heading">
-            Acesse sua Conta
+            Criar sua Conta
           </Heading>
           <Controller
             control={control}
+            name="name"
+            rules={{
+              required: "Informe o nome.",
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Input placeholder="Nome" onChangeText={onChange} value={value} />
+            )}
+          />
+          <Text color="white">{errors.name?.message}</Text>
+
+          <Controller
+            control={control}
             name="email"
+            rules={{
+              required: "Informe o email.",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "E-mail inválido",
+              },
+            }}
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="E-mail"
@@ -78,11 +88,10 @@ export function SignIn() {
                 autoCapitalize="none"
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.email?.message}
               />
             )}
           />
-
+          <Text color="white">{errors.name?.message}</Text>
           <Controller
             control={control}
             name="password"
@@ -92,22 +101,35 @@ export function SignIn() {
                 secureTextEntry
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.password?.message}
               />
             )}
           />
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
-        </Center>
-        <Center mt={24}>
-          <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
-            Ainda não tem acesso?
-          </Text>
+          <Controller
+            control={control}
+            name="password_confirm"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Confirmar a Senha"
+                secureTextEntry
+                onChangeText={onChange}
+                value={value}
+                onSubmitEditing={handleSubmit(handleSignUp)}
+                returnKeyType="send"
+              />
+            )}
+          />
+
           <Button
-            title="Criar conta"
-            variant="outline"
-            onPress={handleNewAccount}
+            title="Criar e acessar"
+            onPress={handleSubmit(handleSignUp)}
           />
         </Center>
+        <Button
+          title="Voltar para o login"
+          variant="outline"
+          mt={24}
+          onPress={handleGoBack}
+        />
       </VStack>
     </ScrollView>
   );

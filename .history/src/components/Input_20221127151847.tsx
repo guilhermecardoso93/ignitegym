@@ -5,10 +5,10 @@ type InputProps = IInputProps & {
 };
 
 export function Input({ errorMessage = null, isInvalid, ...rest }: InputProps) {
-  const invalid = !!errorMessage || isInvalid;
+  const invalid = !!errorMessage || isInvalid ;
 
   return (
-    <FormControl isInvalid={invalid} mb={4}>
+    <FormControl isInvalid={invalid}>
       <InputNative
         bg="gray.700"
         h={14}
@@ -17,12 +17,8 @@ export function Input({ errorMessage = null, isInvalid, ...rest }: InputProps) {
         fontSize="md"
         color="white"
         fontFamily="body"
+        mb={4}
         placeholderTextColor="gray.300"
-        isInvalid={invalid}
-        _invalid={{
-          borderWidth: 1,
-          borderColor: "red.500",
-        }}
         _focus={{
           bg: "gray.700",
           borderWidth: 1,
@@ -30,7 +26,6 @@ export function Input({ errorMessage = null, isInvalid, ...rest }: InputProps) {
         }}
         {...rest}
       />
-      <FormControl.ErrorMessage>{errorMessage}</FormControl.ErrorMessage>
     </FormControl>
   );
 }
