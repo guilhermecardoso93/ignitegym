@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
+import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
@@ -37,7 +37,6 @@ const sigUpSchema = yup.object({
 
 export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
-  const toast = useToast()
   const {
     control,
     handleSubmit,
@@ -57,13 +56,6 @@ export function SignUp() {
       console.log(response.data);
     } catch (error) {
      const isAppError = error instanceof AppError;
-     const title = isAppError ? error.message : 'Não foi possível criar a conta';
-
-     toast.show({
-      title,
-      placement: 'top',
-      bgColor: 'red.500'
-     })
     }
   }
 

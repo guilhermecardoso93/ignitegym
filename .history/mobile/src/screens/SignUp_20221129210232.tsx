@@ -37,7 +37,6 @@ const sigUpSchema = yup.object({
 
 export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
-  const toast = useToast()
   const {
     control,
     handleSubmit,
