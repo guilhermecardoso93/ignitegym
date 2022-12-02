@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import { useAuth } from "@hooks/useAuth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -28,22 +27,22 @@ const sigUpSchema = yup.object({
 });
 
 export function SignIn() {
-  const { signIn } = useAuth();
-
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: yupResolver(sigUpSchema),
+  });
 
   function handleNewAccount() {
     navigation.navigate("signup");
   }
 
-  async function handleSignIn({ email, password }: FormData) {
-    await signIn(email, password);
+  function handleSignIn() {
+    navigation.navigate("signup");
   }
 
   return (
@@ -72,7 +71,6 @@ export function SignIn() {
           <Controller
             control={control}
             name="email"
-            rules={{ required: "Informe o e-mail" }}
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="E-mail"
@@ -88,7 +86,6 @@ export function SignIn() {
           <Controller
             control={control}
             name="password"
-            rules={{ required: "Informe a senha" }}
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="Senha"

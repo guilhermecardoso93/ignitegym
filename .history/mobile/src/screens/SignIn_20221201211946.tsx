@@ -14,6 +14,7 @@ import LogoSvg from "@assets/logo.svg";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+
 type FormData = {
   email: string;
   password: string;
@@ -29,21 +30,17 @@ const sigUpSchema = yup.object({
 
 export function SignIn() {
   const { signIn } = useAuth();
-
+  
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
+  const { control, handleSubmit, formState: { errors }} = useForm<FormData>();
 
   function handleNewAccount() {
     navigation.navigate("signup");
   }
 
-  async function handleSignIn({ email, password }: FormData) {
-    await signIn(email, password);
+  function handleSignIn({ email, password }: FormData) {
+    signIn()
   }
 
   return (
@@ -72,7 +69,7 @@ export function SignIn() {
           <Controller
             control={control}
             name="email"
-            rules={{ required: "Informe o e-mail" }}
+            rules={{required: 'Informe o e-mail'}}
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="E-mail"
@@ -88,7 +85,7 @@ export function SignIn() {
           <Controller
             control={control}
             name="password"
-            rules={{ required: "Informe a senha" }}
+            rules={{required: 'Informe a senha'}}
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="Senha"

@@ -1,19 +1,15 @@
-import React from "react";
-import { StatusBar } from "react-native";
-import { NativeBaseProvider } from "native-base";
+import { View, Text, StatusBar } from "react-native";
+import { NativeBaseProvider, Box } from "native-base";
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 
-import { Routes } from "@routes/index";
-import { AuthContextProvider } from "@contexts/AuthContext";
-
 import { Loading } from "@components/Loading";
-
 import { THEME } from "./src/theme";
-
+import { Routes } from "@routes/index";
+import { AuthContext } from "@contexts/AuthContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_700Bold, Roboto_400Regular });
@@ -25,9 +21,16 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      <AuthContextProvider>
+      <AuthContext.Provider
+        value={{
+          id: "1",
+          name: "Gui",
+          email: "gui@gmail.com",
+          avatar: "gui.png",
+        }}
+      >
         {fontsLoaded ? <Routes /> : <Loading />}
-      </AuthContextProvider>
+      </AuthContext.Provider>
     </NativeBaseProvider>
   );
 }

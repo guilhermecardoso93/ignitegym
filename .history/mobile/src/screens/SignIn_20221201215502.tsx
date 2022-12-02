@@ -38,8 +38,8 @@ export function SignIn() {
     formState: { errors },
   } = useForm<FormData>();
 
-  function handleNewAccount() {
-    navigation.navigate("signup");
+  async function handleNewAccount() {
+    await navigation.navigate("signup");
   }
 
   async function handleSignIn({ email, password }: FormData) {
