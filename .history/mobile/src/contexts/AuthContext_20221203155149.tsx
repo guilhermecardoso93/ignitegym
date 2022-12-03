@@ -1,23 +1,21 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 
+import { api } from "@services/api";
+import { UserDTO } from "@dtos/UserDTO";
+import {
+  storageUserSave,
+  storageUserGet,
+  storageUserRemove,
+} from "@storage/storageUser";
 import {
   storageAuthTokenSave,
   storageAuthTokenGet,
-  storageAuthTokenRemove
 } from "@storage/storageAuthToken";
-import {
-  storageUserGet,
-  storageUserRemove,
-  storageUserSave,
-} from "@storage/storageUser";
-
-import { api } from "@services/api";
-import { UserDTO } from "@dtos/UserDTO";
 
 export type AuthContextDataProps = {
   user: UserDTO;
   singIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
+  singOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
 };
 
@@ -36,13 +34,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function userAndTokenUpdate(userData: UserDTO, token: string) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
     setUser(userData);
   }
 
   async function storageUserAndTokenSave(userData: UserDTO, token: string) {
     try {
       setIsLoadingUserStorageData(true);
+
       await storageUserSave(userData);
       await storageAuthTokenSave(token);
     } catch (error) {
@@ -57,7 +55,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const { data } = await api.post("/sessions", { email, password });
 
       if (data.user && data.token) {
-        await storageUserAndTokenSave(data.user, data.token);
+        setIsLoadingUserStorageData(true);
+
         userAndTokenUpdate(data.user, data.token);
       }
     } catch (error) {
@@ -67,12 +66,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  async function signOut() {
+  async function singOut() {
     try {
       setIsLoadingUserStorageData(true);
       setUser({} as UserDTO);
       await storageUserRemove();
-      await storageAuthTokenRemove()
     } catch (error) {
       throw error;
     } finally {
@@ -106,7 +104,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       value={{
         user,
         singIn,
-        signOut,
+        singOut,
         isLoadingUserStorageData,
       }}
     >
