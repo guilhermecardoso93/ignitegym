@@ -1,10 +1,9 @@
-import { HStack, Text, Pressable, IPressableProps } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Text, Pressable, IPressableProps } from 'native-base';
 
 type Props = IPressableProps & {
   name: string;
-  isActive: boolean;
-};
+  isActive: boolean
+}
 
 export function Group({ name, isActive, ...rest }: Props) {
   return (
@@ -19,8 +18,8 @@ export function Group({ name, isActive, ...rest }: Props) {
       overflow="hidden"
       isPressed={isActive}
       _pressed={{
-        borderColor: "green.500",
-        borderWidth: 1,
+        borderColor: 'green.500',
+        borderWidth: 1
       }}
       {...rest}
     >
