@@ -3,11 +3,11 @@ import { Heading, HStack, Text, VStack, Icon } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { useAuth } from "@hooks/useAuth";
-import { api } from "@services/api";
 
 import { UserPhoto } from "./UserPhoto";
 
 import userPhotoDefault from "@assets/userPhotoDefault.png";
+import { api } from "@services/api";
 
 export function HomeHeader() {
   const { user, signOut } = useAuth();

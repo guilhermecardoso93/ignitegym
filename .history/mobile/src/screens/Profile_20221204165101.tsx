@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
+import { Controller, useForm } from "react-hook-form";
 import {
   Center,
   ScrollView,
@@ -9,52 +10,47 @@ import {
   Heading,
   useToast,
 } from "native-base";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as yup from "yup";
-
-import { useAuth } from "@hooks/useAuth";
-
-import { api } from "@services/api";
-import { AppError } from "@utils/AppError";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
-
-import userPhotoDefault from "@assets/userPhotoDefault.png";
+import { useAuth } from "@hooks/useAuth";
+import { api } from "@services/api";
+import { AppError } from "@utils/AppError";
 
 const PHOTO_SIZE = 33;
 
 type FormDataProps = {
   name: string;
-  email: string;
   password: string;
   old_password: string;
   confirm_password: string;
+  email: string;
 };
 
 const profileSchema = yup.object({
-  name: yup.string().required("Informe o nome"),
+  name: yup.string().required("Informe o nome do usuário!"),
   password: yup
     .string()
-    .min(6, "A senha deve ter pelo menos 6 dígitos.")
+    .min(6, "A senha deve ter pelo menos 6 digitos.")
     .nullable()
     .transform((value) => (!!value ? value : null)),
   confirm_password: yup
     .string()
     .nullable()
     .transform((value) => (!!value ? value : null))
-    .oneOf([yup.ref("password"), null], "A confirmação de senha não confere.")
+    .oneOf([yup.ref("password"), null], "A confirmação de senha não é igual.")
     .when("password", {
       is: (Field: any) => Field,
       then: yup
         .string()
         .nullable()
-        .required("Informe a confirmação da senha.")
+        .required("Informe a confirmação da senha")
         .transform((value) => (!!value ? value : null)),
     }),
 });
@@ -62,6 +58,9 @@ const profileSchema = yup.object({
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
+  const [userPhoto, setUserPhoto] = useState(
+    "https://github.com/guilhermecardoso93.png"
+  );
 
   const toast = useToast();
   const { user, updateUserProfile } = useAuth();
@@ -103,37 +102,28 @@ export function Profile() {
           });
         }
 
-        const fileExtension = photoSelected.uri.split(".").pop();
+        const fileExtension = photoSelected.uri.split('.').pop();
 
         const photoFile = {
           name: `${user.name}.${fileExtension}`.toLowerCase(),
           uri: photoSelected.uri,
-          type: `${photoSelected.type}/${fileExtension}`,
+          type: `${photoSelected.type}/${fileExtension}`
         } as any;
 
-        const userPhotoUploadForm = new FormData();
+        const userPhotoUploadPhoto = new FormData()
+        userPhotoUploadPhoto.append('avatar', photoFile)
 
-        userPhotoUploadForm.append("avatar", photoFile);
-
-        const avatarUpdateResponse = await api.patch(
-          "/users/avatar",
-          userPhotoUploadForm,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await api.patch('/users/avatar', userPhotoUploadPhoto, {
+          headers: {
+            'Content-type': 'multipart/form-data'
           }
-        );
-
-        const userUpdated = user;
-        userUpdated.avatar = avatarUpdateResponse.data.avatar;
-        updateUserProfile(userUpdated);
+        })
 
         toast.show({
-          title: "Foto atualizada!",
-          placement: "top",
-          bgColor: "green.500",
-        });
+          title: 'Foto Atualizada',
+          placenment: 'top',
+          bgColor: 'green.500'
+        })
       }
     } catch (error) {
       console.log(error);
@@ -149,20 +139,20 @@ export function Profile() {
       const userUpdated = user;
       userUpdated.name = data.name;
 
-      await api.put("/users", data);
+      const response = await api.put("/users", data);
 
       await updateUserProfile(userUpdated);
 
       toast.show({
-        title: "Perfil atualizado com sucesso!",
+        title: "Perfil atualizado com sucesso.",
         placement: "top",
-        bgColor: "green.500",
+        bgColor: "green.700",
       });
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
         ? error.message
-        : "Não foi possível atualizar os dados. Tente novamente mais tarde.";
+        : "Não foi possível atualizar os dados.";
 
       toast.show({
         title,
@@ -190,11 +180,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={
-                user.avatar
-                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
-                  : userPhotoDefault
-              }
+              source={{ uri: userPhoto }}
               alt="Foto do usuário"
               size={PHOTO_SIZE}
             />
@@ -225,7 +211,6 @@ export function Profile() {
               />
             )}
           />
-
           <Controller
             control={control}
             name="email"
@@ -250,7 +235,6 @@ export function Profile() {
           >
             Alterar senha
           </Heading>
-
           <Controller
             control={control}
             name="old_password"
@@ -263,7 +247,6 @@ export function Profile() {
               />
             )}
           />
-
           <Controller
             control={control}
             name="password"
@@ -277,7 +260,6 @@ export function Profile() {
               />
             )}
           />
-
           <Controller
             control={control}
             name="confirm_password"
