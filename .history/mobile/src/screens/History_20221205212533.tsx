@@ -1,13 +1,6 @@
 import { useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import {
-  Heading,
-  VStack,
-  SectionList,
-  Text,
-  useToast,
-  Center,
-} from "native-base";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { Heading, VStack, SectionList, Text, useToast } from "native-base";
 
 import { AppError } from "@utils/AppError";
 import { api } from "@services/api";
@@ -31,6 +24,7 @@ export function History() {
 
       const response = await api.get("/history");
       setExercises(response.data);
+
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
@@ -57,38 +51,36 @@ export function History() {
     <VStack flex={1}>
       <ScreenHeader title="Histórico" />
 
-      {isLoading ? (
-        <Loading />
-      ) : exercises?.length > 0 ? (
+      {
+        isLoading ?  <Loading/> : exercises?.length &&
         <SectionList
-          sections={exercises}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <HistoryCard data={item} />}
-          renderSectionHeader={({ section }) => (
-            <Heading
-              color="gray.200"
-              fontSize="md"
-              mt={10}
-              mb={3}
-              fontFamily="heading"
-            >
-              {section.title}
-            </Heading>
-          )}
-          px={8}
-          contentContainerStyle={
-            exercises.length === 0 && { flex: 1, justifyContent: "center" }
-          }
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <Center flex={1}>
+        sections={exercises}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <HistoryCard data={item}/>}
+        renderSectionHeader={({ section }) => (
+          <Heading
+            color="gray.200"
+            fontSize="md"
+            mt={10}
+            mb={3}
+            fontFamily="heading"
+          >
+            {section.title}
+          </Heading>
+        )}
+        px={8}
+        contentContainerStyle={
+          exercises.length === 0 && { flex: 1, justifyContent: "center" }
+        }
+        ListEmptyComponent={() => (
           <Text color="gray.100" textAlign="center">
             Não há exercícios registrados ainda. {"\n"}
             Vamos fazer exercícios hoje?
           </Text>
-        </Center>
-      )}
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+      }
     </VStack>
   );
 }

@@ -109,16 +109,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  function refreshTokenUpdated(newToken: string) {
-    setRefreshedToken(newToken);
-  }
-
   useEffect(() => {
     loadUserData();
   }, []);
 
   useEffect(() => {
-    const subscribe = api.registerInterceptTokenManager({signOut, refreshTokenUpdated});
+    const subscribe = api.registerInterceptTokenManager(signOut);
 
     return () => {
       subscribe();

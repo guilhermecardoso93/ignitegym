@@ -1,13 +1,6 @@
 import { useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import {
-  Heading,
-  VStack,
-  SectionList,
-  Text,
-  useToast,
-  Center,
-} from "native-base";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { Heading, VStack, SectionList, Text, useToast } from "native-base";
 
 import { AppError } from "@utils/AppError";
 import { api } from "@services/api";
@@ -82,12 +75,10 @@ export function History() {
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Center flex={1}>
-          <Text color="gray.100" textAlign="center">
-            Não há exercícios registrados ainda. {"\n"}
-            Vamos fazer exercícios hoje?
-          </Text>
-        </Center>
+        <Text color="gray.100" textAlign="center">
+          Não há exercícios registrados ainda. {"\n"}
+          Vamos fazer exercícios hoje?
+        </Text>
       )}
     </VStack>
   );

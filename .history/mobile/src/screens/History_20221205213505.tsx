@@ -1,13 +1,6 @@
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import {
-  Heading,
-  VStack,
-  SectionList,
-  Text,
-  useToast,
-  Center,
-} from "native-base";
+import { Heading, VStack, SectionList, Text, useToast, Center } from "native-base";
 
 import { AppError } from "@utils/AppError";
 import { api } from "@services/api";

@@ -6,6 +6,8 @@ import {
   storageAuthTokenSave,
 } from "@storage/storageAuthToken";
 
+type SignOut = () => void;
+
 type ProcessQueueParams = {
   error: Error | null;
   token: string | null;
@@ -16,16 +18,9 @@ type PromiseType = {
   reject: (reason?: unknown) => void;
 };
 
-type registerInterceptTokenManagerProps = {
-  signOut : () => void;
-  refreshTokenUpdated: (newToken: string ) => void;
-}
-
 type APIInstanceProps = AxiosInstance & {
-  registerInterceptTokenManager: ({} : registerInterceptTokenManagerProps ) => () => void;
+  registerInterceptTokenManager: (signOut: SignOut) => () => void;
 };
-
-
 
 const api = axios.create({
   baseURL: "http://192.168.1.6:3333",
@@ -46,7 +41,7 @@ const processQueue = ({ error, token = null }: ProcessQueueParams): void => {
   failedQueue = [];
 };
 
-api.registerInterceptTokenManager = ({ signOut, refreshTokenUpdated}) => {
+api.registerInterceptTokenManager = (singOut) => {
   const interceptTokenManager = api.interceptors.response.use(
     (response) => response,
     async (requestError) => {
@@ -58,7 +53,7 @@ api.registerInterceptTokenManager = ({ signOut, refreshTokenUpdated}) => {
           const oldToken = await storageAuthTokenGet();
 
           if (!oldToken) {
-            signOut();
+            singOut();
             return Promise.reject(requestError);
           }
 
@@ -91,15 +86,12 @@ api.registerInterceptTokenManager = ({ signOut, refreshTokenUpdated}) => {
               ] = `Bearer ${data.token}`;
               originalRequest.headers["Authorization"] = `Bearer ${data.token}`;
 
-              refreshTokenUpdated(data.token)
               processQueue({ error: null, token: data.token });
-
-              console.log(data.token)
 
               resolve(originalRequest);
             } catch (error: any) {
               processQueue({ error, token: null });
-              signOut();
+              singOut();
               reject(error);
             } finally {
               isRefreshing = false;
@@ -107,7 +99,7 @@ api.registerInterceptTokenManager = ({ signOut, refreshTokenUpdated}) => {
           });
         }
 
-        signOut();
+        singOut();
       }
 
       if (requestError.response && requestError.response.data) {
